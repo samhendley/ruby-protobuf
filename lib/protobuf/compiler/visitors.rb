@@ -107,16 +107,20 @@ module Protobuf
       end
 
       def create_files(filename, out_dir, file_create)
-        begin
-          eval(to_s, TOPLEVEL_BINDING)  # check the message
-        rescue LoadError
-          $stderr.puts "Warning, couldn't test load proto file because of imports"
-        end
+        
+        # make sure we add the correct base load path for the test load
+        $:.push(out_dir)
+
         if file_create
           log_writing(filename)
           FileUtils.mkpath(File.dirname(filename))
           File.open(filename, 'w') {|file| file.write(to_s) }
+          # if we are writing out the file its best to require it so the ruby runtime
+          # notices the path we load it with and doesn't re-require it next time
+          # TODO: make .pb.rb files tolerant of being re-requiring
+          eval("require '#{filename}'", TOPLEVEL_BINDING)
         else
+          eval(to_s, TOPLEVEL_BINDING) 
           to_s
         end
       end
