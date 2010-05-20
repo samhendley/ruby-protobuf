@@ -240,6 +240,46 @@ module Protobuf
       end
       result.join
     end
+    
+    def add_hash_obj(field, value)
+      case field
+        when Field::MessageField
+          if value.nil?
+            nil
+          else
+            value.to_hash
+          end
+        when Field::EnumField
+          if value.is_a?(EnumValue)
+            value.name
+          else
+            field.type.name_by_value(value)
+          end
+        else
+          value
+      end
+    end
+    
+    def to_hash
+      result = {}
+      
+      each_field do |field, value|
+        if field.repeated?
+          if value.none?
+            result[field.name] = []
+          else
+            result[field.name] = value.collect do |v|
+              add_hash_obj(field, v)
+            end
+          end
+        else
+          unless field.optional? && ! has_field?(field.name)
+            result[field.name] = add_hash_obj(field, value)
+          end
+        end
+      end
+      result
+    end
 
     def parse_from_string(string)
       parse_from(StringIO.new(string))

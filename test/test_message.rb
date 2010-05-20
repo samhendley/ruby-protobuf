@@ -36,22 +36,26 @@ class MessageTest < Test::Unit::TestCase
     assert_equal('Jiro', person.name)
     assert_equal(300, person.id)
     assert_equal('jiro@ema.il', person.email)
+    assert_equal(person, Tutorial::Person.new(person.to_hash)) # test to_hash roundtrip
 
     # initialize with array of hash
     person = Tutorial::Person.new(:phone => [{:number => 'phone1'}, {:number => 'phone2'}])
     assert_equal('phone1', person.phone[0].number)
     assert_equal('phone2', person.phone[1].number)
+    assert_equal(person, Tutorial::Person.new(person.to_hash))
 
     # initalize with hash in hash
     message = Test::MergeMessage.new(:require_message => { :name => 'name1', :repeate_message => [{:name => 'name2'}] })
     assert_equal('name1', message.require_message.name)
     assert_equal('name2', message.require_message.repeate_message[0].name)
+    assert_equal(message, Test::MergeMessage.new(message.to_hash))
 
     message.require_message = { :name => 'name21' }
     message.require_message.repeate_message = [ {:name => 'name22'} ]
     assert_equal('name21', message.require_message.name)
     assert_equal('name22', message.require_message.repeate_message[0].name)
     assert_equal(1,        message.require_message.repeate_message.size)
+    assert_equal(message, Test::MergeMessage.new(message.to_hash))
   end
 
   def test_defined_filenames
@@ -125,4 +129,5 @@ message AddressBook {
     assert_equal('name121', message1.require_message.repeate_message[0].name)
     assert_equal('name221', message1.require_message.repeate_message[1].name)
   end
+  
 end

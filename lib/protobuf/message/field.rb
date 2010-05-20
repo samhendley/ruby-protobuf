@@ -655,6 +655,8 @@ module Protobuf
     class EnumField < VarintField
       def acceptable?(val)
         case val
+        when String
+          raise TypeError unless @type.const_defined?(val.to_sym)
         when Symbol
           raise TypeError unless @type.const_defined?(val)
         when EnumValue
@@ -688,6 +690,8 @@ module Protobuf
             else
               val = \
                 case val
+                when String
+                  field.type.const_get(val.to_sym) rescue nil
                 when Symbol
                   field.type.const_get(val) rescue nil
                 when Integer
