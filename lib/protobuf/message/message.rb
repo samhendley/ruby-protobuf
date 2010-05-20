@@ -265,7 +265,7 @@ module Protobuf
       
       each_field do |field, value|
         if field.repeated?
-          if value.none?
+          unless value.any?
             result[field.name] = []
           else
             result[field.name] = value.collect do |v|
