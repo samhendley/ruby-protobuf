@@ -251,9 +251,9 @@ module Protobuf
           end
         when Field::EnumField
           if value.is_a?(EnumValue)
-            value.name
+            value.name.to_s
           else
-            field.type.name_by_value(value)
+            field.type.name_by_value(value).to_s
           end
         else
           value
