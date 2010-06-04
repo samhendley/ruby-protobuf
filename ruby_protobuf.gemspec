@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ruby_protobuf}
-  s.version = "0.4.1.1"
+  s.version = "0.4.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["MATSUYAMA Kengo"]
-  s.date = %q{2010-05-20}
+  s.date = %q{2010-06-02}
   s.default_executable = %q{rprotoc}
   s.description = %q{Ruby implementation for Protocol Buffers.}
   s.email = %q{macksx@gmail.com}
@@ -61,6 +61,7 @@ Gem::Specification.new do |s|
      "lib/protobuf/rpc/handler.rb",
      "lib/protobuf/rpc/server.rb",
      "lib/ruby_protobuf.rb",
+     "ruby_protobuf.gemspec",
      "script/mk_parser",
      "test/check_unbuild.rb",
      "test/data/data.bin",
@@ -139,6 +140,7 @@ Gem::Specification.new do |s|
      "test/test_packed_field.rb",
      "test/test_parse.rb",
      "test/test_repeated_types.rb",
+     "test/test_rerequire.rb",
      "test/test_serialize.rb",
      "test/test_standard_message.rb",
      "test/test_types.rb",
